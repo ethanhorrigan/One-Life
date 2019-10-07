@@ -27,20 +27,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         MovePlayer();
-
-        //transform.Rotate(Vector2, 0, speed * Time.deltaTime, 0, Space.Self);
-
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, 0, speed);
-            Debug.Log("ROTATE");
-        }
-
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0,0, speed);
-            Debug.Log("ROTATE");
-        }
     }
 
     void FixedUpdate()
@@ -88,6 +74,16 @@ public class PlayerMovement : MonoBehaviour
             {
                 // ... flip the player down
                 Flip(1);
+            }
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                transform.Rotate(0, 0, speed);
+            }
+
+            if (Input.GetKey(KeyCode.Q))
+            {
+                transform.Rotate(0, 0, speed);
             }
         }
     }
