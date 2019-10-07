@@ -15,10 +15,6 @@ public class PlayerMovement : MonoBehaviour
 
     public bool active;
 
-    private bool facingRight = true;
-    private bool facingUp = false;
-
-
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -49,32 +45,7 @@ public class PlayerMovement : MonoBehaviour
         if (active)
         {
             horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
-            vertical = Input.GetAxisRaw("Vertical"); // -1 is down
-
-
-            if (horizontal > 0 && !facingRight)
-            {
-                // ... flip the player.
-                Flip(0);
-            }
-            // Otherwise if the input is moving the player left and the player is facing right...
-            else if (horizontal < 0 && facingRight)
-            {
-                // ... flip the player.
-                Flip(0);
-            }
-
-            if (vertical > 0 && !facingUp)
-            {
-                // ... flip the player up
-                Flip(1);
-            }
-            // Otherwise if the input is moving the player left and the player is facing right...
-            else if (vertical < 0 && facingRight)
-            {
-                // ... flip the player down
-                Flip(1);
-            }
+            vertical = Input.GetAxisRaw("Vertical"); // -1 is downW
 
             if (Input.GetKey(KeyCode.E))
             {
@@ -85,21 +56,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.Rotate(0, 0, speed);
             }
-        }
-    }
-
-    private void Flip(int direction)
-    {
-        if (direction == 0)
-        {
-            facingRight = !facingRight;
-            transform.Rotate(0f, 180f, 0f);
-        }
-
-        if (direction == 1)
-        {
-            facingUp = !facingUp;
-            transform.Rotate(180f, 0f, 0f);
         }
     }
 }
