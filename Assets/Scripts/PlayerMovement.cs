@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5.0f;
 
     public bool active;
-
+ 
     void Start()
     {
         body = GetComponent<Rigidbody2D>();

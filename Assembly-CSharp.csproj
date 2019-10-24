@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraAspectRatioScaler\CameraAspectRatioScaler.cs" />
     <Compile Include="Assets\Joystick Pack\Examples\JoystickPlayerExample.cs" />
     <Compile Include="Assets\Joystick Pack\Examples\JoystickSetterExample.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Base\Joystick.cs" />
@@ -69,10 +70,15 @@
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
-    <Compile Include="Assets\JoyStickButton.cs" />
+    <Compile Include="Assets\Scripts\Bullets.cs" />
     <Compile Include="Assets\Scripts\Constants\DirectionConstants.cs" />
     <Compile Include="Assets\Scripts\EnemyPathing.cs" />
+    <Compile Include="Assets\Scripts\JoyStickButton.cs" />
+    <Compile Include="Assets\Scripts\LevelHandler.cs" />
+    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+    <None Include="Assets\CameraAspectRatioScaler\Readme.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Unity Projects/One Life/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
