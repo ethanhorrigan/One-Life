@@ -75,9 +75,10 @@
     <Compile Include="Assets\Scripts\EnemyPathing.cs" />
     <Compile Include="Assets\Scripts\JoyStickButton.cs" />
     <Compile Include="Assets\Scripts\LevelHandler.cs" />
-    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Shoot.cs" />
+    <Compile Include="Assets\Scripts\utils\AmmunitionPool.cs" />
     <None Include="Assets\CameraAspectRatioScaler\Readme.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Unity Projects/One Life/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
