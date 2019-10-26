@@ -8,7 +8,7 @@ public class Shoot : MonoBehaviour
     private float destroyDelay = 0.5f;
     void Update()
     {
-        transform.Translate(Vector2.right * shootSpeed * Time.deltaTime);
+        //transform.Translate(Vector2.right * shootSpeed * Time.deltaTime);
         Destroy(gameObject, destroyDelay);
     }
 }

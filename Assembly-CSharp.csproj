@@ -71,6 +71,7 @@
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
     <Compile Include="Assets\Scripts\Bullets.cs" />
+    <Compile Include="Assets\Scripts\ChargePoints.cs" />
     <Compile Include="Assets\Scripts\Constants\DirectionConstants.cs" />
     <Compile Include="Assets\Scripts\EnemyPathing.cs" />
     <Compile Include="Assets\Scripts\JoyStickButton.cs" />

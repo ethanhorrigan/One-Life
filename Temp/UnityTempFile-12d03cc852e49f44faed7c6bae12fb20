@@ -304,12 +304,12 @@ Assets\CameraAspectRatioScaler\CameraAspectRatioScaler.cs
 "Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs"
 "Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs"
 Assets\Scripts\Bullets.cs
+Assets\Scripts\ChargePoints.cs
 Assets\Scripts\Constants\DirectionConstants.cs
 Assets\Scripts\EnemyPathing.cs
 Assets\Scripts\JoyStickButton.cs
 Assets\Scripts\LevelHandler.cs
-Assets\Scripts\NewBehaviourScript.cs
 Assets\Scripts\Player.cs
 Assets\Scripts\PlayerMovement.cs
+Assets\Scripts\Shoot.cs
 Assets\Scripts\utils\AmmunitionPool.cs
-Assets\Shoot.cs
