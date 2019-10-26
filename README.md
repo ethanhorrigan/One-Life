@@ -22,5 +22,9 @@ to complete levels.
 - [x] Enemy
 - [x] Blank Robot
 - [ ] Active Robot
+
 ## Acknowledgments
+
+-	Buddy System-  https://prodigalson.itch.io/buddy-system
+-	Serious Sam - https://serioussam.fandom.com/wiki/Serious_Sam:_The_First_Encounter
 
