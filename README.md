@@ -6,6 +6,10 @@
 The main goal is to solve puzzles by giving life to other robots to activate charge points while defending against enemies
 to complete levels.
 
+## Gameplay
+
+You need to have a life to be able to move. The ‘life’ must be passed by from one character (blank robot) to another. Only robot having ‘life’ can move around and shoot laser to the enemy – infected robots.  If infected robot touches robot with the life, then that robot has infected, and life is killed and the game is lost. Infected robots move faster than blank robots so they can catch them if life is kept too long in the same robot. As well infected robots can since ‘life’ and start moving towards it, but only from a distance.
+
 ## Built With
 
 * [Unity](https://unity.com/) - Game Engine used
