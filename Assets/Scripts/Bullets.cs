@@ -10,8 +10,6 @@ public class Bullets : MonoBehaviour
     [SerializeField]
     private Transform gunPos;
 
-
-    // Update is called once per frame
     void Update()
     {
         Shoot();
