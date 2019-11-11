@@ -9,7 +9,7 @@ using UnityEngine;
 public class ChargePoints : MonoBehaviour
 {
 
-    private bool pressure = false;
+    public bool pressure = false;
 
     /// <summary>
     /// When the player triggers the charge point
@@ -18,13 +18,21 @@ public class ChargePoints : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (collision.transform.tag == "Player" && pressure == false)
-       // {
-           // pressure = true;
-            //Physics2D.IgnoreCollision(collision.collider, GetComponent<PolygonCollider2D>());
+        if (PlayerHandler.IsPlayer(collision))
+        {
             Debug.Log("Pressure Plate Triggered");
-            //GetComponent<PolygonCollider2D>().enabled = false;
-      //  }
+            collision.GetComponent<SpriteRenderer>().sortingOrder = 2;
+            pressure = true;
+        }
+
+        else
+            Debug.Log("Not a player");
+ 
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log("Pressure Plate Exit");
     }
     /// <summary>
     /// When the player exits the charge point

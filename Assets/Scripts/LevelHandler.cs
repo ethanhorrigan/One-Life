@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class LevelHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -23,6 +11,25 @@ public class LevelHandler : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Collided");
+        GameObject player1 = GameObject.Find("Player_One");
+        GameObject player2 = GameObject.Find("Player_Two");
+        GameObject pressurePlate = GameObject.Find("PressurePlate");
+
+        if (collision.otherCollider.tag == "Player" && pressurePlate.GetComponent<ChargePoints>().pressure)
+        {
+
+        }
+
+        if (collision.otherCollider.tag == "Player2" && pressurePlate.GetComponent<ChargePoints>().pressure)
+        {
+
+        }
+
+        else
+        {
+            Debug.Log("no pressure detected");
+        }
+
     }
 
 
