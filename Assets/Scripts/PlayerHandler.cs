@@ -6,44 +6,51 @@ using UnityEngine;
 public class PlayerHandler : MonoBehaviour
 {
     public GameObject player;
-    private int bullets = Constants.STARTING_BULLETS;
 
     public static int currentPlayer = 0;
 
     //Private Variables
     private Rigidbody2D body;
     private Vector3 target;
-    private float horizontal;
-    private float vertical;
-    private float moveLimiter = Constants.MOVE_LIMITER;
-    private float speed;
+
+
+    float horizontal;
+    float vertical;
+    float moveLimiter = 0.7f;
+
+
+    float speed = 20.0f;
+
+    public GameObject bullet;
+    public Transform gunPos;
+
 
     void Start()
     {
         target = transform.position;
         body = GetComponent<Rigidbody2D>();
         body.freezeRotation = true;
+
     }
     void FixedUpdate()
     {
-        //if (horizontal != 0 && vertical != 0) // Check for diagonal movement
-        //{
-        //    // limit movement speed diagonally, so you move at 70% speed
-        //    horizontal *= moveLimiter;
-        //    vertical *= moveLimiter;
-        //}
-        //speed = Constants.MOVE_SPEED;
-        //body.velocity = new Vector2(horizontal * speed, vertical * speed);
     }
 
     void Update()
     {
+
+        //shootBullet();
     }
-    //private void MovePlayer()
-    //{
-    //    horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
-    //    vertical = Input.GetAxisRaw("Vertical"); // -1 is downW
-    //}
+
+    void shootBullet()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RotatePlayer();
+            Instantiate(bullet, gunPos.position, gunPos.rotation);
+        }
+    }
+
 
     /// <summary>
     /// Rotates player to the target (mouse position)

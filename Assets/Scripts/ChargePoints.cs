@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class ChargePoints : MonoBehaviour
 {
-
-    public bool pressure = false;
+    public GameObject cp;
+    public bool pressure;
 
     /// <summary>
     /// When the player triggers the charge point
@@ -22,6 +22,7 @@ public class ChargePoints : MonoBehaviour
         {
             Debug.Log("Pressure Plate Triggered");
             collision.GetComponent<SpriteRenderer>().sortingOrder = 2;
+            this.GetComponent<SpriteRenderer>().color = Color.blue;
             pressure = true;
         }
 
@@ -29,22 +30,27 @@ public class ChargePoints : MonoBehaviour
             Debug.Log("Not a player");
  
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        Debug.Log("Pressure Plate Exit");
-    }
     /// <summary>
     /// When the player exits the charge point
     /// </summary>
     /// <param name="collision">Player Collision is passed through when it exits the Charge Point</param>
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.tag == "Player" && pressure == true)
+        if (collision.gameObject.name == "Bullet")
         {
+            Debug.Log(collision.name);
+            return;
+        }
+        if (collision.gameObject.tag != "Bullet")
+        {
+            this.GetComponent<SpriteRenderer>().color = Color.yellow;
             pressure = false;
-            //GetComponent<PolygonCollider2D>().enabled = true;
             Debug.Log("Pressure Plate Exit");
         }
+    }
+
+    private void Start()
+    {
+        cp.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 }

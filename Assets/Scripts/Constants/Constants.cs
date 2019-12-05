@@ -20,5 +20,8 @@ namespace Assets.Scripts.Constants
         public const float MOVE_LIMITER = 0.7f;
         public const float DESTROY_DELAY = 1.0F;
 
+        public const int LEVEL_COUNT = 3;
+        public const string SCENE_NAME = "Level_";
+
     }
 }

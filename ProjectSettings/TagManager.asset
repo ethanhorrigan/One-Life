@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Player2
+  - PressurePlate
+  - Wall
+  - HoleTile
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -14,8 +18,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - HoleTile
+  - Bullet
   - 
   - 
   - 

@@ -1,28 +1,30 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelHandler : MonoBehaviour
 {
+    private int[] levels = {1,2,3};
+    private int currentLevel = 1;
+
     /// <summary>
-    /// 
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.LoadScene.html
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collided");
+        if (collision.gameObject.tag == "Bullet")
+            return;
         GameObject player1 = GameObject.Find("Player_One");
         GameObject player2 = GameObject.Find("Player_Two");
-        GameObject pressurePlate = GameObject.Find("PressurePlate");
+        GameObject pressurePlate = GameObject.Find("Charge Point");
 
-        if (collision.otherCollider.tag == "Player" && pressurePlate.GetComponent<ChargePoints>().pressure)
+        if (pressurePlate.GetComponent<ChargePoints>().pressure)
         {
-
-        }
-
-        if (collision.otherCollider.tag == "Player2" && pressurePlate.GetComponent<ChargePoints>().pressure)
-        {
-
+            currentLevel++;
+            SceneManager.LoadScene("Level_" +levels[currentLevel]);
         }
 
         else
