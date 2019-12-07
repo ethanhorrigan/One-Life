@@ -45,7 +45,7 @@ public class IntroHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         if (next == 3)
-            SceneManager.LoadScene("Level_1");
+            SceneManager.LoadScene("Level_Test");
         if (next != 3)
         SceneManager.LoadScene("Intro_" + next);
     }

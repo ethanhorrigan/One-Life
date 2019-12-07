@@ -26,22 +26,25 @@ public class Joystick : MonoBehaviour
     float vertical;
     float moveLimiter = 0.7f;
 
-
+    float startingScale;
 
 
     private Vector3 target;
+    private Vector3 shootPoint;
     private Quaternion originalRotationValue; // declare this as a Quaternion
     float rotationResetSpeed = 1.0f;
 
     void Start()
     {
         //animator.SetBool("Alive", true);
-        target = transform.position;
+        target = gunPos.transform.position;
 
         /*
          * Set the original rotation, so it can be moved back to original value again
          */
         originalRotationValue = transform.rotation;
+        startingScale = player.transform.localScale.x;
+
 
         body = GetComponent<Rigidbody2D>();
         body.freezeRotation = true;
@@ -61,9 +64,21 @@ public class Joystick : MonoBehaviour
             vertical *= moveLimiter;
             animator.SetBool("Running", true);
         }
-        //speed = Constants.MOVE_SPEED;
-        body.velocity = new Vector2(horizontal * speed, vertical * speed);
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+           // transform.localScale = new Vector2(-startingScale, transform.localScale.y);
+            player.transform.rotation = Quaternion.Euler(0, -180, 0);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+           // transform.localScale = new Vector2(startingScale, transform.localScale.y);
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+            body.velocity = new Vector2(horizontal * speed, vertical * speed);
     }
+
+    //private void RotateGun()
 
     void Update()
     {
@@ -82,7 +97,6 @@ public class Joystick : MonoBehaviour
             if (isOnPc)
             {
                 animator.SetBool("Idle", true);
-                Debug.Log("Test");
                 MovePlayerPC();
                 shootBullet();
             }
@@ -132,6 +146,7 @@ public class Joystick : MonoBehaviour
                 {
                     leftTouch = 99;
                     circle.transform.position = new Vector2(outerCircle.transform.position.x, outerCircle.transform.position.y);
+                    Debug.Log(circle.transform.position);
                     transform.rotation = Quaternion.Slerp(transform.rotation, originalRotationValue, Time.time * rotationResetSpeed);
                 }
 
@@ -167,7 +182,8 @@ public class Joystick : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     RotateGun();
-                    Instantiate(bullet, gunPos.position, gunPos.rotation);
+                    shootPoint = new Vector3(gunPos.position.x + 0.5f, gunPos.position.y, gunPos.position.z);
+                    Instantiate(bullet, shootPoint, gunPos.rotation);
                 }
             }
             else
@@ -181,23 +197,27 @@ public class Joystick : MonoBehaviour
     private void RotateGun()
     {
 
-            GetPosition();
+        target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        target.z = transform.position.z;
 
-            // Get Angle in Radians
-            float AngleRad = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x);
-            // Get Angle in Degrees
-            float AngleDeg = (180 / Mathf.PI) * AngleRad;
-            // Rotate Object
-            gunPos.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+        // Get Angle in Radians
+        float AngleRad = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x);
+        // Get Angle in Degrees
+        float AngleDeg = (180 / Mathf.PI) * AngleRad;
+        gunPos.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+        Debug.Log(AngleDeg);
     }
 
-    /**
-     * Returns the target position.
-     */
-    private void GetPosition()
-    {
-            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            target.z = transform.position.z;
-    }
+    //private void RotateGun()
+    //{
+    //    Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+    //    Vector2 direction = new Vector2(
+    //       mousePosition.x = gunPos.position.x,
+    //       mousePosition.y = gunPos.position.y
+    //    );
+
+    //    gunPos.transform.right = direction;
+    //}
 
 }
