@@ -11,10 +11,17 @@ public class ChargePoints : MonoBehaviour
     public GameObject cp;
     public bool pressure;
 
+    public GameObject pressurePlate;
+    public Sprite _noPressure;
+    public Sprite _yesPressure;
+
     /// <summary>
     /// When the player triggers the charge point
     /// </summary>
     /// <param name="collision">Player Collision is passed through when it collides with the Charge Point</param>
+    /// 
+
+ 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,7 +29,8 @@ public class ChargePoints : MonoBehaviour
         {
             Debug.Log("Pressure Plate Triggered");
             collision.GetComponent<SpriteRenderer>().sortingOrder = 2;
-            this.GetComponent<SpriteRenderer>().color = Color.blue;
+            //this.GetComponent<SpriteRenderer>().color = Color.blue;
+            pressurePlate.GetComponent<SpriteRenderer>().sprite = _yesPressure;
             pressure = true;
         }
 
@@ -43,7 +51,7 @@ public class ChargePoints : MonoBehaviour
         }
         if (collision.gameObject.tag != "Bullet")
         {
-            this.GetComponent<SpriteRenderer>().color = Color.yellow;
+            pressurePlate.GetComponent<SpriteRenderer>().sprite = _noPressure;
             pressure = false;
             Debug.Log("Pressure Plate Exit");
         }
@@ -51,6 +59,6 @@ public class ChargePoints : MonoBehaviour
 
     private void Start()
     {
-        cp.GetComponent<SpriteRenderer>().color = Color.yellow;
+        pressurePlate.GetComponent<SpriteRenderer>().sprite = _noPressure;
     }
 }
