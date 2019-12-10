@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelHandler : MonoBehaviour
 {
-    private int[] levels = {1,2,3};
-    private int currentLevel = 1;
+    public int currentLevel;
 
     /// <summary>
     /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.LoadScene.html
@@ -19,12 +18,12 @@ public class LevelHandler : MonoBehaviour
             return;
         GameObject player1 = GameObject.Find("Player_One");
         GameObject player2 = GameObject.Find("Player_Two");
-        GameObject pressurePlate = GameObject.Find("Charge Point");
+        GameObject pressurePlate = GameObject.Find("PressurePlate");
 
         if (pressurePlate.GetComponent<ChargePoints>().pressure)
         {
             currentLevel++;
-            SceneManager.LoadScene("Level_" +levels[currentLevel]);
+            SceneManager.LoadScene("Level_" + currentLevel);
         }
 
         else

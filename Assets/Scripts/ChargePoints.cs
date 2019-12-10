@@ -15,6 +15,12 @@ public class ChargePoints : MonoBehaviour
     public Sprite _noPressure;
     public Sprite _yesPressure;
 
+    public Sprite _doorClosed;
+    public Sprite _doorOpen;
+
+    public AudioClip aPressure;
+    private AudioSource audioSource;
+
     /// <summary>
     /// When the player triggers the charge point
     /// </summary>
@@ -27,10 +33,13 @@ public class ChargePoints : MonoBehaviour
     {
         if (PlayerHandler.IsPlayer(collision))
         {
-            Debug.Log("Pressure Plate Triggered");
+            GameObject door = GameObject.FindGameObjectWithTag("Door");
+            audioSource.PlayOneShot(aPressure);
             collision.GetComponent<SpriteRenderer>().sortingOrder = 2;
             //this.GetComponent<SpriteRenderer>().color = Color.blue;
+            door.GetComponent<SpriteRenderer>().sprite = _doorOpen;
             pressurePlate.GetComponent<SpriteRenderer>().sprite = _yesPressure;
+
             pressure = true;
         }
 
@@ -46,19 +55,22 @@ public class ChargePoints : MonoBehaviour
     {
         if (collision.gameObject.name == "Bullet")
         {
-            Debug.Log(collision.name);
             return;
         }
         if (collision.gameObject.tag != "Bullet")
         {
+            GameObject door = GameObject.FindGameObjectWithTag("Door");
+            audioSource.PlayOneShot(aPressure);
             pressurePlate.GetComponent<SpriteRenderer>().sprite = _noPressure;
             pressure = false;
-            Debug.Log("Pressure Plate Exit");
+            door.GetComponent<SpriteRenderer>().sprite = _doorClosed;
         }
     }
 
     private void Start()
     {
+        
+        audioSource = GetComponent<AudioSource>();
         pressurePlate.GetComponent<SpriteRenderer>().sprite = _noPressure;
     }
 }

@@ -30,10 +30,23 @@ public class MenuController : MonoBehaviour
         StartCoroutine(FadeOut(1));
     }
 
+    public void OnContinueClick()
+    {
+        anim.Play("continue");
+        audioSource.Play();
+        StartCoroutine(Continute());
+    }
+
 
     IEnumerator FadeOut(int level)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("Intro");
+    }
+
+    IEnumerator Continute()
+    {
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene("Level_1");
     }
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    public GameObject gun;
     private float shootSpeed = 500.0f;
     private Rigidbody2D rb;
     private int bounceCount;
     private string otherPlayer;
+  
 
     public CircleCollider2D circleCollider;
     void Update()
@@ -62,9 +62,6 @@ public class Shoot : MonoBehaviour
             otherPlayer = "Player2";
             Destroy(gameObject);
         }
-
-
-        Debug.Log("trigg");
     }
 
     private IEnumerator DisableAnimator(string player)
@@ -75,14 +72,20 @@ public class Shoot : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
         bounceCount++;
-        Debug.Log("collided");
         if(collision.otherCollider.tag == "Wall")
         {
             circleCollider.enabled = true;
         }
+        if (collision.collider.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Collided with enemy");
+            Destroy(enemy);
+            Destroy(gameObject);
+        }
         /* Destroy the bullet if it collides with anything thats NOT a player*/
-        if(bounceCount == 1 && collision.gameObject.tag != otherPlayer)
+        if (bounceCount == 1 && collision.gameObject.tag != otherPlayer)
         {
             Destroy(gameObject, Constants.DESTROY_DELAY);
         }

@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - HoleTile
   - Bullet
+  - Door
+  - Enemy
   layers:
   - Default
   - TransparentFX

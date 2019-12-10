@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Joystick : MonoBehaviour
 {
     public Transform player;
-    private float speed = 5.0f;
+    private float speed = 4f;
     public bool active;
     public bool isOnPc;
     public Animator animator;
@@ -34,6 +35,13 @@ public class Joystick : MonoBehaviour
     private Quaternion originalRotationValue; // declare this as a Quaternion
     float rotationResetSpeed = 1.0f;
 
+    /*Bullet Handler Variable*/
+    GameObject main;
+    int currentLevel;
+    /* Audio Variables */
+    private AudioSource audioSource;
+    public AudioClip aShoot;
+
     void Start()
     {
         //animator.SetBool("Alive", true);
@@ -46,8 +54,20 @@ public class Joystick : MonoBehaviour
         startingScale = player.transform.localScale.x;
 
 
+        /* get the audio source compoenent*/
+        audioSource = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
         body.freezeRotation = true;
+        /*Get the current level*/
+        GameObject door = GameObject.FindGameObjectWithTag("Door");
+        currentLevel = door.GetComponent<LevelHandler>().currentLevel;
+        /*Initialize bullets*/
+        main = GameObject.FindGameObjectWithTag("MainCamera");
+    }
+
+    IEnumerator StartRunning() { 
+        animator.SetBool("Running", true);
+        yield return new WaitForSeconds(2);
     }
 
     /* PC Variables */
@@ -55,14 +75,13 @@ public class Joystick : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
         vertical = Input.GetAxisRaw("Vertical"); // -1 is downW
-
         if (horizontal != 0 && vertical != 0) // Check for diagonal movement
         {
             // limit movement speed diagonally, so you move at 70% speed
 
             horizontal *= moveLimiter;
             vertical *= moveLimiter;
-            animator.SetBool("Running", true);
+            //StartCoroutine(StartRunning());
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -82,14 +101,22 @@ public class Joystick : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         if(!active)
         {
             animator.SetBool("Running", false);
             animator.SetBool("Idle", false);
             animator.SetBool("Dead", true);
+            animator.SetBool("Alive", false);
         }
         if (active)
         {
+
+            animator.SetBool("Dead", false);
+            animator.SetBool("Idle", true);
             if (gameObject.GetComponent<SpriteRenderer>().sprite.name == "IdleAnimation_1")
             {
                 animator.SetBool("Alive", false);
@@ -130,13 +157,34 @@ public class Joystick : MonoBehaviour
                 else if (t.phase == TouchPhase.Moved && leftTouch == t.fingerId)
                 {
                     Vector2 offset = touchPos - startingPoint;
-                    Vector2 direction = Vector2.ClampMagnitude(offset, 1.0f);
+                    Vector2 direction;
 
-                    moveCharacter(direction * 1);
+                        
+                    //moveCharacter(direction * 1);
 
-                    circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
+                    //circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
+                        if (circle.transform.position.x < -11.5)
+                        {
+                            direction = Vector2.ClampMagnitude(offset, -1.0f);
+                            player.transform.rotation = Quaternion.Euler(0, -180, 0);
+                            moveCharacter(direction * 1);
 
-                }
+                            circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
+                            Debug.Log("Direction:" + direction);
+                        }
+
+                        else
+                        {
+                            direction = Vector2.ClampMagnitude(offset, 1.0f);
+                            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                            moveCharacter(direction * 1);
+
+                            circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
+                            Debug.Log("Direction:" + direction);
+                        }
+
+                        // Debug.Log(circle.transform.position);
+                    }
 
                 /*
                  * If the finger has been lifted (no touch registered)
@@ -146,9 +194,10 @@ public class Joystick : MonoBehaviour
                 {
                     leftTouch = 99;
                     circle.transform.position = new Vector2(outerCircle.transform.position.x, outerCircle.transform.position.y);
-                    Debug.Log(circle.transform.position);
+                    //Debug.Log(circle.transform.position);
                     transform.rotation = Quaternion.Slerp(transform.rotation, originalRotationValue, Time.time * rotationResetSpeed);
-                }
+
+                    }
 
                 ++i;
                 Debug.Log("TouchCount:" + Input.touchCount);
@@ -169,6 +218,7 @@ public class Joystick : MonoBehaviour
     {
         if (active)
         {
+            animator.SetBool("Dead", false);
             player.Translate(direction * speed * Time.deltaTime);
         }
     }
@@ -181,15 +231,38 @@ public class Joystick : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    RotateGun();
-                    shootPoint = new Vector3(gunPos.position.x + 0.5f, gunPos.position.y, gunPos.position.z);
-                    Instantiate(bullet, shootPoint, gunPos.rotation);
+                    if (main.GetComponent<BulletHandler>().bullets == 0)
+                    {
+                        SceneManager.LoadScene("Level_" + 1);
+                    }
+                    if(main.GetComponent<BulletHandler>().bullets > 0)
+                    {
+
+                        RotateGun();
+                        shootPoint = new Vector3(gunPos.position.x + 0.5f, gunPos.position.y, gunPos.position.z);
+                        Instantiate(bullet, shootPoint, gunPos.rotation);
+                        audioSource.PlayOneShot(aShoot);
+
+                        main.GetComponent<BulletHandler>().bullets--;
+                    }
+                     
                 }
             }
             else
             {
-                //RotateGun();
-                Instantiate(bullet, gunPos.position, gunPos.rotation);
+                if (main.GetComponent<BulletHandler>().bullets == 0)
+                {
+                    SceneManager.LoadScene("Level_" + 1);
+                }
+                if (main.GetComponent<BulletHandler>().bullets > 0)
+                {
+                    RotateGun();
+                    shootPoint = new Vector3(gunPos.position.x + 0.5f, gunPos.position.y, gunPos.position.z);
+                    Instantiate(bullet, shootPoint, gunPos.rotation);
+                    audioSource.PlayOneShot(aShoot);
+
+                    main.GetComponent<BulletHandler>().bullets--;
+                }
             }
         }
     }
@@ -205,19 +278,24 @@ public class Joystick : MonoBehaviour
         // Get Angle in Degrees
         float AngleDeg = (180 / Mathf.PI) * AngleRad;
         gunPos.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
-        Debug.Log(AngleDeg);
     }
 
-    //private void RotateGun()
-    //{
-    //    Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    public void FlipLeft()
+    {
+        if(active)
+        {
+            Debug.Log("Flip Left");
+            player.transform.rotation = Quaternion.Euler(0, -180, 0);
 
-    //    Vector2 direction = new Vector2(
-    //       mousePosition.x = gunPos.position.x,
-    //       mousePosition.y = gunPos.position.y
-    //    );
+        }
+    }
 
-    //    gunPos.transform.right = direction;
-    //}
+    public void FlipRight()
+    {
+        if (active) {
+            Debug.Log("Flip Right");
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
 
 }
