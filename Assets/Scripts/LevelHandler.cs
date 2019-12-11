@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * Author: Ethan Horrigan
+ * Handles scene managment to transition between levels
+ * Adapted from: https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.LoadScene.html
+ */
 public class LevelHandler : MonoBehaviour
 {
     public int currentLevel;
 
-    /// <summary>
-    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.LoadScene.html
-    /// </summary>
-    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Bullet")

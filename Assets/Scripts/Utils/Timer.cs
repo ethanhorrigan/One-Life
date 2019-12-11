@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/**
+/*
  * Author: Ethan Horrigan
  * Timer Class to initilize Timer and display the Timer UI
  */
@@ -28,7 +28,6 @@ public class Timer : MonoBehaviour
         levelText.text = door.GetComponent<LevelHandler>().currentLevel.ToString();
     }
 
-    // Update is called once per frame
     void Update()
     {
         time += Time.deltaTime;

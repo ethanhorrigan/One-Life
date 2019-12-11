@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/* 
+ * Author: Ethan Horrigan
+ * Stores Unique variables to avoid the use of 'Magic Numbers'
+ */
 namespace Assets.Scripts.Constants
 {
     public class Constants
@@ -22,6 +26,14 @@ namespace Assets.Scripts.Constants
 
         public const int LEVEL_COUNT = 3;
         public const string SCENE_NAME = "Level_";
+
+        public const float MIN_DELAY = 0.1f;
+        public const float MAX_DELAY = 0.4f;
+
+        public const float FLIP_OFFSET = 0.5f;
+
+        public const int LEFT_CLICK = 0;
+        public const int RIGHT_CLICK = 1;
 
     }
 }

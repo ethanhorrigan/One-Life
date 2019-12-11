@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 /*
+ * Author: Ethan Horrigan
  * Music Player class to continuously play background music throughout
  * all scenes.
  * Adapted From: https://answers.unity.com/questions/1260393/make-music-continue-playing-through-scenes.html

@@ -1,20 +1,21 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Author: Ethan Horrigan
+ * Generates a Typewriter effect to be used in the intro scenes
+ * Adapted From: https://unitycoder.com/blog/2015/12/03/ui-text-typewriter-effect-script/
+ */
 public class TypewriterController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    //public float delay = 0.3f;
     public string fullText = "";
     private string currentText = "";
-    Random rnd = new Random();
     private float delay = 0.4f;
     private AudioSource audioSource;
 
-    private float lowPitch = 2.0f;
-    private float highPitch = 2.2f;
     public bool finished = false;
 
     void Start()
@@ -24,12 +25,11 @@ public class TypewriterController : MonoBehaviour
         this.GetComponent<Text>().fontSize = 150;
     }
 
-    private void randomSound()
+    private void PlaySound()
     {
-        //float randomPitch = Random.Range(lowPitch, highPitch);
-        //audioSource.pitch = randomPitch;
         audioSource.Play();
     }
+
     IEnumerator showText()
     {
         for(int i = 0; i < fullText.Length; i++)
@@ -37,10 +37,10 @@ public class TypewriterController : MonoBehaviour
             currentText = fullText.Substring(0, i);
             this.GetComponent<Text>().text = currentText;
             if(i != 0)
-                randomSound();
-            delay =Random.Range(0.1f, 0.4f);
+                PlaySound();
+            delay = Random.Range(Constants.MIN_DELAY, Constants.MAX_DELAY);
             if (currentText == ".") {
-                delay = 0.1f;
+                delay = Constants.MIN_DELAY;
             }
 
                

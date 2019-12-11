@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/**
+ * Author: Ethan Horrigan
+ * This class handles the majority of functioanlity throughout the game
+ */
 public class Joystick : MonoBehaviour
 {
+    /* Player Variables */
     public Transform player;
     private float speed = 4f;
     public bool active;
@@ -17,23 +23,25 @@ public class Joystick : MonoBehaviour
     private Vector2 startingPoint;
     private int leftTouch = 99;
 
+    /* Gun Variables */
     public GameObject bullet;
     public Transform gunPos;
 
     private Rigidbody2D body;
 
-
+    /* Movment Variables */
     float horizontal;
     float vertical;
     float moveLimiter = 0.7f;
 
     float startingScale;
 
-
+    /* Position Variables */
     private Vector3 target;
     private Vector3 shootPoint;
     private Quaternion originalRotationValue; // declare this as a Quaternion
     float rotationResetSpeed = 1.0f;
+    private bool isFlipped = false;
 
     /*Bullet Handler Variable*/
     GameObject main;
@@ -44,33 +52,36 @@ public class Joystick : MonoBehaviour
 
     void Start()
     {
-        //animator.SetBool("Alive", true);
         target = gunPos.transform.position;
-
         /*
          * Set the original rotation, so it can be moved back to original value again
          */
         originalRotationValue = transform.rotation;
         startingScale = player.transform.localScale.x;
 
-
         /* get the audio source compoenent*/
         audioSource = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
         body.freezeRotation = true;
+
         /*Get the current level*/
         GameObject door = GameObject.FindGameObjectWithTag("Door");
         currentLevel = door.GetComponent<LevelHandler>().currentLevel;
+
         /*Initialize bullets*/
         main = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
-    IEnumerator StartRunning() { 
+    /*
+     * IEnumerator method to add transition to Running Animation
+     */
+    IEnumerator StartRunning()
+    {
         animator.SetBool("Running", true);
         yield return new WaitForSeconds(2);
     }
 
-    /* PC Variables */
+    /* Handles the functionality for player movment on PC */
     private void MovePlayerPC()
     {
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
@@ -81,31 +92,17 @@ public class Joystick : MonoBehaviour
 
             horizontal *= moveLimiter;
             vertical *= moveLimiter;
-            //StartCoroutine(StartRunning());
         }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-           // transform.localScale = new Vector2(-startingScale, transform.localScale.y);
-            player.transform.rotation = Quaternion.Euler(0, -180, 0);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-           // transform.localScale = new Vector2(startingScale, transform.localScale.y);
-            player.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-            body.velocity = new Vector2(horizontal * speed, vertical * speed);
+        body.velocity = new Vector2(horizontal * speed, vertical * speed);
     }
-
-    //private void RotateGun()
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        if(!active)
+        if (!active)
         {
             animator.SetBool("Running", false);
             animator.SetBool("Idle", false);
@@ -125,52 +122,47 @@ public class Joystick : MonoBehaviour
             {
                 animator.SetBool("Idle", true);
                 MovePlayerPC();
+                FaceMouse();
                 shootBullet();
             }
-            else { 
-            int i = 0;
-            while (i < Input.touchCount)
+            else
             {
-                Touch t = Input.GetTouch(i);
-                //Returns touch pos (screen to world)
-                Vector2 touchPos = getTouchPosition(t.position); // * -1 for perspective cameras
-                /**
-                 * If a touch is registered
-                 */
-                if (t.phase == TouchPhase.Began)
+                int i = 0;
+                while (i < Input.touchCount)
                 {
-                    leftTouch = t.fingerId;
-                    startingPoint = touchPos;
-
+                    Touch t = Input.GetTouch(i);
+                    //Returns touch pos (screen to world)
+                    Vector2 touchPos = getTouchPosition(t.position);
                     /**
-                     * If the screen has been tapped twice, shoot.
-                     * (Double tap to shoot)
-                     */
-                    if (Input.GetTouch(i).tapCount == 2)
+                    * If a touch is registered
+                    */
+                    if (t.phase == TouchPhase.Began)
                     {
-                        shootBullet();
+                        leftTouch = t.fingerId;
+                        startingPoint = touchPos;
+
+                        /**
+                         * If the screen has been tapped twice, shoot.
+                         * (Double tap to shoot)
+                         */
+                        if (Input.GetTouch(i).tapCount == 2)
+                        {
+                            shootBullet();
+                        }
                     }
-                }
-                /*
-                 * If touch is still down
-                 */
-                else if (t.phase == TouchPhase.Moved && leftTouch == t.fingerId)
-                {
-                    Vector2 offset = touchPos - startingPoint;
-                    Vector2 direction;
-
-                        
-                    //moveCharacter(direction * 1);
-
-                    //circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
+                    /*
+                     * If touch is still down
+                     */
+                    else if (t.phase == TouchPhase.Moved && leftTouch == t.fingerId)
+                    {
+                        Vector2 offset = touchPos - startingPoint;
+                        Vector2 direction;
+                        //moveCharacter(direction * 1);
                         if (circle.transform.position.x < -11.5)
                         {
                             direction = Vector2.ClampMagnitude(offset, -1.0f);
                             player.transform.rotation = Quaternion.Euler(0, -180, 0);
                             moveCharacter(direction * 1);
-
-                            circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
-                            Debug.Log("Direction:" + direction);
                         }
 
                         else
@@ -178,31 +170,24 @@ public class Joystick : MonoBehaviour
                             direction = Vector2.ClampMagnitude(offset, 1.0f);
                             player.transform.rotation = Quaternion.Euler(0, 0, 0);
                             moveCharacter(direction * 1);
-
-                            circle.transform.position = new Vector2(outerCircle.transform.position.x + direction.x, outerCircle.transform.position.y + direction.y);
-                            Debug.Log("Direction:" + direction);
                         }
-
-                        // Debug.Log(circle.transform.position);
                     }
 
-                /*
-                 * If the finger has been lifted (no touch registered)
-                 * Reset the circle to its original position
-                 */
-                else if (t.phase == TouchPhase.Ended && leftTouch == t.fingerId)
-                {
-                    leftTouch = 99;
-                    circle.transform.position = new Vector2(outerCircle.transform.position.x, outerCircle.transform.position.y);
-                    //Debug.Log(circle.transform.position);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, originalRotationValue, Time.time * rotationResetSpeed);
-
+                    /*
+                     * If the finger has been lifted (no touch registered)
+                     * Reset to its original position
+                     */
+                    else if (t.phase == TouchPhase.Ended && leftTouch == t.fingerId)
+                    {
+                        leftTouch = 99;
+                        circle.transform.position = new Vector2(outerCircle.transform.position.x, outerCircle.transform.position.y);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, originalRotationValue, Time.time * rotationResetSpeed);
                     }
 
-                ++i;
-                Debug.Log("TouchCount:" + Input.touchCount);
+                    ++i;
+                    Debug.Log("TouchCount:" + Input.touchCount);
+                }
             }
-        }
         }
     }
 
@@ -223,29 +208,32 @@ public class Joystick : MonoBehaviour
         }
     }
 
+    /* 
+     * Handles functionality for shooting 
+     */
     void shootBullet()
     {
         if (active)
         {
             if (isOnPc)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(Constants.LEFT_CLICK))
                 {
                     if (main.GetComponent<BulletHandler>().bullets == 0)
                     {
                         SceneManager.LoadScene("Level_" + 1);
                     }
-                    if(main.GetComponent<BulletHandler>().bullets > 0)
+                    if (main.GetComponent<BulletHandler>().bullets > 0)
                     {
 
                         RotateGun();
-                        shootPoint = new Vector3(gunPos.position.x + 0.5f, gunPos.position.y, gunPos.position.z);
+                        shootPoint = new Vector3(gunPos.position.x, gunPos.position.y, gunPos.position.z);
                         Instantiate(bullet, shootPoint, gunPos.rotation);
                         audioSource.PlayOneShot(aShoot);
 
                         main.GetComponent<BulletHandler>().bullets--;
                     }
-                     
+
                 }
             }
             else
@@ -267,6 +255,9 @@ public class Joystick : MonoBehaviour
         }
     }
 
+    /*
+     * Rotates gun to where the player wants to shoot (target)
+     */
     private void RotateGun()
     {
 
@@ -278,22 +269,57 @@ public class Joystick : MonoBehaviour
         // Get Angle in Degrees
         float AngleDeg = (180 / Mathf.PI) * AngleRad;
         gunPos.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+       
     }
 
+    /* 
+     * Face the gun according to the mouse position 
+     */
+    private void FaceMouse()
+    {
+        /* Get the mouse position (screen space) */
+        Vector3 mousePos = Input.mousePosition;
+
+        /* convert from screen space to world space */
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+        /* Create a direction vector (Vector2 in 2D) */
+        Vector2 direction = new Vector2(
+            mousePos.x - gunPos.transform.position.x,
+            mousePos.y - gunPos.transform.position.y
+            );
+
+        gunPos.transform.right = direction;
+
+        if (direction.x < Constants.FLIP_OFFSET - 0.5f && !isFlipped)
+            FlipLeft();
+        else if (direction.x > Constants.FLIP_OFFSET - 0.5f)
+            FlipRight();
+        if (Input.GetMouseButtonDown(Constants.LEFT_CLICK))
+            Debug.Log("direction:" + direction);
+        Debug.Log("PlayerPos:" + player.transform.position.x);
+    }
+
+    /* 
+     * Flip the player to Face Left 
+     */
     public void FlipLeft()
     {
-        if(active)
+        if (active)
         {
-            Debug.Log("Flip Left");
+            isFlipped = true;
             player.transform.rotation = Quaternion.Euler(0, -180, 0);
 
         }
     }
-
+    /*
+     * FLip the Player to Face Right
+     */
     public void FlipRight()
     {
-        if (active) {
-            Debug.Log("Flip Right");
+        if (active)
+        {
+            isFlipped = false;
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }

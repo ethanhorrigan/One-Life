@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Charge Points class to handle functionality of Charge Points
-/// When player triggers a charge point it becomes activated, opening a door to pass the current level
-/// </summary>
+/*
+ * Author: Ethan Horrigan
+ * Charge Points class to handle functionality of Charge Points
+ * When player triggers a charge point it becomes activated, opening a door to pass the current level
+ */
 public class ChargePoints : MonoBehaviour
 {
     public GameObject cp;
@@ -20,14 +21,6 @@ public class ChargePoints : MonoBehaviour
 
     public AudioClip aPressure;
     private AudioSource audioSource;
-
-    /// <summary>
-    /// When the player triggers the charge point
-    /// </summary>
-    /// <param name="collision">Player Collision is passed through when it collides with the Charge Point</param>
-    /// 
-
- 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -47,10 +40,7 @@ public class ChargePoints : MonoBehaviour
             Debug.Log("Not a player");
  
     }
-    /// <summary>
-    /// When the player exits the charge point
-    /// </summary>
-    /// <param name="collision">Player Collision is passed through when it exits the Charge Point</param>
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Bullet")
@@ -69,7 +59,6 @@ public class ChargePoints : MonoBehaviour
 
     private void Start()
     {
-        
         audioSource = GetComponent<AudioSource>();
         pressurePlate.GetComponent<SpriteRenderer>().sprite = _noPressure;
     }

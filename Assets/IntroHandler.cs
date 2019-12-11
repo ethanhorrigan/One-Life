@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * Author: Ethan Horrigan
+ * Handles functionality for the intro scenes
+ */
 public class IntroHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
     GameObject text;
     TypewriterController textScript;
     private Animator animator;
@@ -18,7 +21,6 @@ public class IntroHandler : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (textScript.finished == true)
@@ -38,7 +40,6 @@ public class IntroHandler : MonoBehaviour
             }
             StartCoroutine(NextIntro(currIntro));
         }
-            
     }
 
     IEnumerator NextIntro(int next)

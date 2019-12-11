@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*
+ * Author: Ethan Horrigan
+ * Button functions in the Main Menu
+ */
 public class MenuController : MonoBehaviour
 {
 

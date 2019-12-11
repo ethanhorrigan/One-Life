@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Author: Ethan Horrigan
+ * Inital player class
+ */
 public class PlayerHandler : MonoBehaviour
 {
     public GameObject player;

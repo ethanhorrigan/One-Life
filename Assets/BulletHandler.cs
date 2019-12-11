@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * Author: Ethan Horrigan
+ * Stores the total bullets a player can use per level
+ */
 public class BulletHandler : MonoBehaviour
 {
     public int bullets;
     private GameObject main;
-    void Start()
-    {
-    
-    }
-    // Update is called once per frame
+
     void Update()
     {
         if(bullets < 0)

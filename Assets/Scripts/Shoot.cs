@@ -3,20 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Author: Ethan Horrigan
+ * Handles the shooting mechanic
+ */
 public class Shoot : MonoBehaviour
 {
     private float shootSpeed = 500.0f;
     private Rigidbody2D rb;
     private int bounceCount;
     private string otherPlayer;
-  
-
     public CircleCollider2D circleCollider;
-    void Update()
-    {
-        
-        //Destroy(gameObject, Constants.DESTROY_DELAY);
-    }
 
     void Start()
     {
@@ -47,7 +44,6 @@ public class Shoot : MonoBehaviour
             player1.GetComponent<Animator>().SetBool("Alive", true);
             otherPlayer = "Player";
             Destroy(gameObject);
-            //animator.SetBool("Alive", true);
         }
 
         if(other.tag == "Player2" && other.GetComponent<Joystick>().active == false)
@@ -57,9 +53,15 @@ public class Shoot : MonoBehaviour
             player1.GetComponent<Animator>().SetBool("Dead", true);
             player2.GetComponent<Animator>().SetBool("Dead", false);
             player2.GetComponent<Animator>().SetBool("Alive", true);
-
-
             otherPlayer = "Player2";
+            Destroy(gameObject);
+        }
+        if (other.tag == "Player" && other.GetComponent<Joystick>().active == true)
+        {
+            Destroy(gameObject);
+        }
+        if (other.tag == "Player2" && other.GetComponent<Joystick>().active == true)
+        {
             Destroy(gameObject);
         }
     }
@@ -78,6 +80,14 @@ public class Shoot : MonoBehaviour
         {
             circleCollider.enabled = true;
         }
+        if(collision.otherCollider.tag == "Player")
+        {
+            Destroy(gameObject);
+        }
+        if (collision.otherCollider.tag == "Player2")
+        {
+            Destroy(gameObject);
+        }
         if (collision.collider.gameObject.tag == "Enemy")
         {
             Debug.Log("Collided with enemy");
@@ -85,7 +95,7 @@ public class Shoot : MonoBehaviour
             Destroy(gameObject);
         }
         /* Destroy the bullet if it collides with anything thats NOT a player*/
-        if (bounceCount == 1 && collision.gameObject.tag != otherPlayer)
+        if (bounceCount == 4 && collision.gameObject.tag != otherPlayer)
         {
             Destroy(gameObject, Constants.DESTROY_DELAY);
         }

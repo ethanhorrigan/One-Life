@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * Author: Ethan Horrigan
+ * Handles enemy pathing between 'Active' players.
+ * Adapted From: https://www.youtube.com/watch?v=rhoQd6IAtDo&t=20s
+ */
 public class EnemyPathing : MonoBehaviour
 {
     [SerializeField]
