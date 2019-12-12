@@ -63,7 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AmmoHandler.cs" />
     <Compile Include="Assets\BulletHandler.cs" />
+    <Compile Include="Assets\CameraFollower.cs" />
     <Compile Include="Assets\IntroHandler.cs" />
     <Compile Include="Assets\MusicPlayer.cs" />
     <Compile Include="Assets\Scripts\ChargePoints.cs" />

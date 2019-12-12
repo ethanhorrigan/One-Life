@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: bc41c95f8fce40f4c8550868caf55620
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 150
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: D3 CuteBitMapism TypeB
+  fontNames:
+  - D3 CuteBitMapism TypeB
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
