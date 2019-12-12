@@ -22,9 +22,16 @@ public class MenuController : MonoBehaviour
         audioSource = this.GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
+
     public void OnQuitClick()
     {
         anim.Play("quit");
+        Application.Quit();
     }
 
     public void OnPlayClick()
